@@ -27,4 +27,12 @@ f.TurtleSetup()
 ```
 
 # Installation::
- - 
+#### Windows:
+```bat
+pip install update
+pip install wheel
+python setup.py bdist_wheel
+pip install \dist\<filename>
+```
+---
+**Documentation** *[Soming Soon]*
