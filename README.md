@@ -27,17 +27,9 @@ f.TurtleSetup()
 ```
 
 # Installation::
-#### Windows:
-```bat
-pip install update
-pip install wheel
-python setup.py bdist_wheel
-pip install \dist\<filename>
-```
-
 #### From PIP:
 ```bat
-pip install -i https://test.pypi.org/simple/ Kyros
+pip install Kyros
 ```
 ---
 **Documentation** *[Soming Soon]*
