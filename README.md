@@ -1,4 +1,4 @@
-# Some1and2's Kairos - A Fractal Generator
+# Some1and2's Kyros - A Fractal Generator
 #### Basic Class Oriented Fractal Generator with Binary Acceleration - Single Threaded, made with python
 # Key Features:: 
  - Uses CPU Optimisation for faster Execution Time
@@ -8,9 +8,9 @@
 
 # Basic Usage::
 ```python
-import Kairos
+import Kyros
 
-f = Kairos.fractal()
+f = Kyros.fractal()
 
  # Function for Setting all the data at once to Preset Settings
 f.SetAll()
@@ -18,7 +18,7 @@ f.SetAll()
  # Function for Getting Data through Text Box Input
 f.GetData()
 
- # Function for setting the function used by Kairos [Very Optional]
+ # Function for setting the function used by Kyros [Very Optional]
 f.SetFunction(func=function)
 
  # Function that opens a Turtle Window as a Display
