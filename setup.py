@@ -4,8 +4,8 @@ from setuptools import find_packages, setup
 
 setup(
 	name="Kyros",
-	packages=find_packages(include=["Kairos"]),
-	version="3.0.0",
+	packages=find_packages(include=["Kyros"]),
+	version="3.0.1",
 	description="A Class Based Python Library for Fractal Generation",
 	author="@some1and2",
 	license="GNUv3.0",

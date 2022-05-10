@@ -12,14 +12,14 @@ from colorsys import hsv_to_rgb
 from numba import jit
 import turtle
 
-from Kairos import ExecTime
+from Kyros import ExecTime
 # import ThreeDeeify
 
 class fractal:
 
 	def __init__(self):
 
-		self.__version__ = "v2.2.8"
+		self.__version__ = "v3.0.1"
 		self.line = "-" * 25
 
 		# Makes File Name with Four Letters Between "A" and "Z" : ABCD.txt
@@ -225,6 +225,7 @@ class fractal:
 	# Writes Header Information to the Data file
 	def WriteHeader(self):
 		genTxt =  [
+		"Some1and2's Kyros - A Fractal Generator",
 		" SD | Standard (f(z) = z^2 + c)",
 		"  R | Rabbit (Subtract Real Number from Imaginary and Vise Versa with f(z) = z^2 + c)",
 		" BS | Burning Ship (f(z) = |z|^2)",

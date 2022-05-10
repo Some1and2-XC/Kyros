@@ -177,7 +177,7 @@ def ObjectArrayCreate(data, name, info):
 									pixel[j, imY - k - 1] = n[1]
 							except:
 								1
-	im.save(f"{name}_3D.png")
+	im.save(f"{name}-3D.png")
 	print()
 	print("-" * 25)
 	return im
