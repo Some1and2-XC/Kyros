@@ -32,4 +32,4 @@ f.TurtleSetup()
 pip install Kyros
 ```
 ---
-**Documentation** *[Soming Soon]*
+**Documentation** *[Coming Soon]*
