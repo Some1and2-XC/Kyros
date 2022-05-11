@@ -650,7 +650,7 @@ class fractal:
 	def ColorIn(self, b: float) -> tuple:
 
 		def ToRadians(n):
-			number *= 3.141592653589792323 / 180
+			return n * 3.141592653589792323 / 180
 
 		if b != 0:
 			if b == (self.MaxI) - 1:
