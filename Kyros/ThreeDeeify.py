@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 
-import random
 from PIL import Image
 from numba import jit
-
-# import get
 
 # google how to make graficcx
 # realize girafic'x don't exist
@@ -115,7 +112,7 @@ def GetBox(data):
 # def IsInDirection(data):
 
 
-def ObjectArrayCreate(data, name, info):
+def ObjectArrayCreate(data: list, name: str, info: tuple):
 	global MaxI, xLen, yLen, yHeightMultiplyer, BackgroundColor, ColorType, RateOfColorChange
 	(MaxI, ColorType, RateOfColorChange) = info
 	del info
