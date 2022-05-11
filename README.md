@@ -31,5 +31,29 @@ f.TurtleSetup()
 ```bat
 pip install Kyros
 ```
+
+# Test::
+#### To Make a Copy of the `Social preview` of the Library:
+```python
+import Kyros
+
+settings = {
+	"count": 0,
+	"ci": 0,
+	"cj": 0,
+	"IsJulia": False,
+	"SizeX": 1280,
+	"MaxI": 500,
+	"RateOfColorChange": 9,
+	"BoxRange": ((0.00086806, 0.00043403), (-0.09848914930555545, 0.6495883493661031)),
+	"GenType": "SD TD",
+	"ColorType": "sunset"
+}
+
+f = Kyros.fractal()
+f.SetAll(settings)
+f.TurtleSetup()
+```
+
 ---
 **Documentation** *[Coming Soon]*
