@@ -12,14 +12,15 @@ from colorsys import hsv_to_rgb
 from numba import jit
 import turtle
 
-from Kyros import ExecTime
-# import ThreeDeeify
+from .ExecTime import *
+# from .ThreeDeeify import *
+
 
 class fractal:
 
 	def __init__(self):
 
-		self.__version__ = "v3.0.1"
+		self.__version__ = "v3.0.3"
 		self.line = "-" * 25
 
 		# Makes File Name with Four Letters Between "A" and "Z" : ABCD.txt
@@ -36,7 +37,7 @@ class fractal:
 			pass
 		os.chdir(self.FileName)
 
-	@ExecTime.ExecTime
+	@ExecTime
 	# Main function for everything
 	def main(self, x: float = 0, y: float = 0, first: bool = False):
 
@@ -94,7 +95,7 @@ class fractal:
 
 		# Makes a 3D version
 		if self.MakeThreeDee: # Makes a 3D version of 
-			# ThreeDeeify.ObjectArrayCreate(data, f"{self.FileName} - {self.count}", (self.MaxI, self.ColorType, self.RateOfColorChange))
+			# ObjectArrayCreate(data, f"{self.FileName} - {self.count}", (self.MaxI, self.ColorType, self.RateOfColorChange))
 			pass
 
 		# Increments the count for how many Images have been made
@@ -713,3 +714,5 @@ class fractal:
 	def close(self):
 		self.win.bye()
 		exit()
+
+
