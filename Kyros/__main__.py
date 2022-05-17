@@ -39,13 +39,13 @@ class fractal:
 	# Main function for Running Turtles
 	def main(self, x: float = 0, y: float = 0, first: bool = False):
 
-		self.eval(turtle = True)
+		self.eval(turtle = True, x = x, y = y)
 
 		return
 
 	@ExecTime
 	# Function that evaluates and draws graph
-	def eval(self, turtle: bool = False):
+	def eval(self, turtle: bool = False, x: float = None, y: float = None):
 
 		# Makes SizeY the correct amount of pixels in relation to SizeX
 		self.SizeY = int((self.BoxRange[0][1] / self.BoxRange[0][0]) * self.SizeX)
