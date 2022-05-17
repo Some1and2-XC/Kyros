@@ -744,14 +744,18 @@ class TDObject:
 
 		self.yHeightMultiplyer = 0.5 * self.xLen / self.MaxI
 
-		print("Starting 3D Process...")
-		
+		def WriteInitialisation(n):
+			1
+			print(f"3D INITIALISATION: [{n} / 3]", end="\r")
+
+		WriteInitialisation(1)
 		triangles = self.CubicTriangleAssembly()
-		print("Cubic Triangle Assembly Complete!")
+		WriteInitialisation(2)
 		# Data becomes list of triangle corners with coordinates
 		self.data = self.SquaredTriangleAssembly(triangles)
-		print("Squared Triangle Assembly Complete!")
+		WriteInitialisation(3)
 
+		print()
 		print("-" * 25)
 
 		BackgroundColor = (255, 255, 255, 0)
