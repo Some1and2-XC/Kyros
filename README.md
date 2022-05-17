@@ -26,7 +26,7 @@ f.TD = True
 f.SetFunction(func=function)
 
  # Function that evaluates and saves the Graph
- f.eval()
+f.eval()
 
  # Function that opens a Turtle Window as a Display
 f.TurtleSetup()
