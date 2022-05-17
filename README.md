@@ -41,6 +41,7 @@ pip install Kyros
 
 #### From GITHUB: 
 ```bat
+pip install wheel
 cd __directory__
 py setup.py bdist_wheel
 pip install dist\__version__
