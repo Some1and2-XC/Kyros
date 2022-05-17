@@ -10,7 +10,6 @@ setup(
 	version="3.0.4",
 	description="A Class Based Python Library for Fractal Generation",
 	author="@some1and2",
-	author_email='04x0xx@gmail.com',
 	license="GPL-3.0",
 	install_requires=["pillow >= 9.1.0", "numba"],
 	setup_requires=[],
