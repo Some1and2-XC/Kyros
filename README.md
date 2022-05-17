@@ -39,6 +39,13 @@ f.TurtleSetup()
 pip install Kyros
 ```
 
+#### From GITHUB: 
+```bat
+cd __directory__
+py setup.py bdist_wheel
+pip install dist\__version__
+```
+
 # Test::
 #### To Make a Copy of the `Social preview` of the Library:
 ```python
