@@ -5,6 +5,7 @@
  - Functionality for Various kinds of Fractals such as the `Mandelbrot`, `Julia` & `Burning Ship` fractals (and more)
  - Various Color Pallets for the Generators
  - Output File for Generator Data, Saves the Settings used to an Output file so that the settings can be Reused and Images can be Recreated at Higher Resolution etc
+ - Support for making 3D versions of `fractals`
 
 # Basic Usage::
 ```python
@@ -18,8 +19,14 @@ f.SetAll()
  # Function for Getting Data through Text Box Input
 f.GetData()
 
+ # To make a 3D Version of a graph, set the `TD` variable to `True`
+f.TD = True
+
  # Function for setting the function used by Kyros [Very Optional]
 f.SetFunction(func=function)
+
+ # Function that evaluates and saves the Graph
+ f.eval()
 
  # Function that opens a Turtle Window as a Display
 f.TurtleSetup()
@@ -54,9 +61,6 @@ f = Kyros.fractal()
 f.SetAll(settings)
 f.TurtleSetup()
 ```
-
-# Current Work::
-### See `TODO.md` to see what is being worked
 
 ---
 **Documentation** *[Coming Soon]*

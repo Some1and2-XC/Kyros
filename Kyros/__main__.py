@@ -1,26 +1,24 @@
 #!/usr/bin/env python3
 
-import time
-
 from PIL import Image
 
 import os
+from random import randint
 
 from math import cos
-from random import randint
 from colorsys import hsv_to_rgb
 from numba import jit
+
 import turtle
 
 from .ExecTime import *
-# from .ThreeDeeify import *
 
 
 class fractal:
 
 	def __init__(self):
 
-		self.__version__ = "v3.0.3"
+		self.__version__ = "v3.0.4"
 		self.line = "-" * 25
 
 		# Makes File Name with Four Letters Between "A" and "Z" : ABCD.txt
@@ -29,7 +27,8 @@ class fractal:
 
 		self.win = None
 
-		self.MakeThreeDee = False
+		# Used to specify wether the make Three Dee version
+		self.TD = False
 
 		try:
 			os.mkdir(self.FileName)
@@ -38,22 +37,28 @@ class fractal:
 		os.chdir(self.FileName)
 
 	@ExecTime
-	# Main function for everything
+	# Main function for Running Turtles
 	def main(self, x: float = 0, y: float = 0, first: bool = False):
 
-		# Starts tracking the time
-		start = time.time()
+		self.eval(turtle = True)
+
+		return
+
+	# Function that evaluates and draws graph
+	def eval(self, turtle: bool = False):
 
 		# Makes SizeY the correct amount of pixels in relation to SizeX
 		self.SizeY = int((self.BoxRange[0][1] / self.BoxRange[0][0]) * self.SizeX)
 
-		# Gets which Percentage of the Screen that was Clicked on
-		self.clickLocation = (2 * x / self.SizeX, 2 * y / self.SizeY)
 
-		# if this is not the first click, this is used to make the start conditions easier to setup
-		# This makes some ajustments to where the boxrange is after you click (zooming twice as close and moving)
-		if not first:
-			self.BoxRange = ((self.BoxRange[0][0] / self.ZoomAmnt, self.BoxRange[0][1] / self.ZoomAmnt), (self.BoxRange[1][0] + (self.BoxRange[0][0] - (self.BoxRange[0][0] / self.ZoomAmnt)) / 2 + self.BoxRange[0][0] * self.clickLocation[0] / self.ZoomAmnt, self.BoxRange[1][1] + (self.BoxRange[0][1] - (self.BoxRange[0][1] / self.ZoomAmnt)) / 2 + self.BoxRange[0][1] * self.clickLocation[1] / self.ZoomAmnt))
+		if turtle:
+			# Gets which Percentage of the Screen that was Clicked on
+			self.clickLocation = (2 * x / self.SizeX, 2 * y / self.SizeY)
+
+			# if this is not the first click, this is used to make the start conditions easier to setup
+			# This makes some ajustments to where the boxrange is after you click (zooming twice as close and moving)
+			if not first:
+				self.BoxRange = ((self.BoxRange[0][0] / self.ZoomAmnt, self.BoxRange[0][1] / self.ZoomAmnt), (self.BoxRange[1][0] + (self.BoxRange[0][0] - (self.BoxRange[0][0] / self.ZoomAmnt)) / 2 + self.BoxRange[0][0] * self.clickLocation[0] / self.ZoomAmnt, self.BoxRange[1][1] + (self.BoxRange[0][1] - (self.BoxRange[0][1] / self.ZoomAmnt)) / 2 + self.BoxRange[0][1] * self.clickLocation[1] / self.ZoomAmnt))
 
 		self.WriteFileInformation()
 
@@ -64,7 +69,7 @@ class fractal:
 		# Sets 'oneline' to the line of values generated in 'MakeFrame' and 'i' to which line it had made (counting from 0 to SizeX - 1)
 		# Only generated one line of the frame at a time into memory at a time instead of generating the entire image. 
 
-		print(f"\n{self.line}")
+		print(f"\n{self.FileName}\n{self.line}")
 
 		data = []
 
@@ -86,20 +91,14 @@ class fractal:
 		im.save(savedFile)
 
 		if self.win is not None:
-
 			# Sets the background of the Turtle window as the newly created image
 			self.win.bgpic(savedFile)
 
 			# Updates the Turtle Screen
 			self.win.update()
 
-		# Makes a 3D version
-		if self.MakeThreeDee: # Makes a 3D version of 
-			# ObjectArrayCreate(data, f"{self.FileName} - {self.count}", (self.MaxI, self.ColorType, self.RateOfColorChange))
-			pass
-
-		# Increments the count for how many Images have been made
-		self.count += 1
+		if self.TD:
+			TDObject(self.FileName, data, self.ColorIn, self.MaxI, self.ColorType, self.RateOfColorChange).eval()
 
 		return
 
@@ -675,6 +674,13 @@ class fractal:
 					MaxValue = 65
 					hue = ((MaxValue - MinValue) * .5 * cos(ToRadians(b * self.RateOfColorChange)) + (MaxValue + MinValue) * .5) % 360
 					value = .125 * cos(ToRadians(b * self.RateOfColorChange)) + .815
+
+				elif self.ColorType == "red":
+					MinValue = -20
+					MaxValue = 25
+					hue = ((MaxValue - MinValue) * .5 * cos(ToRadians(b * self.RateOfColorChange)) + (MaxValue + MinValue) * .5) % 360
+					value = .125 * cos(ToRadians(b * self.RateOfColorChange)) + .815
+
 				else:
 					hue = (b * self.RateOfColorChange)
 					value = 1
@@ -715,4 +721,160 @@ class fractal:
 		self.win.bye()
 		exit()
 
+class TDObject:
+	def __init__(self, name: str,  data: list = [[0, 1],[1, 2]], ColorFunc = False, MaxI: int = 1000, ColorType: str = "basic", RateOfColorChange: int = 9):
+		self.name = name
+		self.data = data
+		self.ColorFunc = ColorFunc
+		self.MaxI = MaxI
+		self.ColorType = ColorType
+		self.RateOfColorChange = RateOfColorChange
 
+	# Function for evaluating
+	@ExecTime
+	def eval(self):
+
+		# Actual Dimensions of end Image
+		self.imX = int(1024 * 8)
+		self.imY = int(self.imX * 9 / 16)
+
+		# Dimensions of the list supplied
+		self.xLen = len(self.data)
+		self.yLen = len(self.data[0])
+
+		self.yHeightMultiplyer = 0.5 * self.xLen / self.MaxI
+
+		print("Starting 3D Process...")
+		
+		triangles = self.CubicTriangleAssembly()
+		print("Cubic Triangle Assembly Complete!")
+		# Data becomes list of triangle corners with coordinates
+		self.data = self.SquaredTriangleAssembly(triangles)
+		print("Squared Triangle Assembly Complete!")
+
+		print("-" * 25)
+
+		BackgroundColor = (255, 255, 255, 0)
+		im = Image.new("RGBA", (self.imX, self.imY), BackgroundColor)
+		pixel = im.load()
+
+		# Returns a list of the bottom left + top right of the triangle
+		def GetBox(data):
+			Box = [list(data[0]), list(data[1])]
+			for i in data:
+				if i[0] < Box[0][0]:
+					Box[0][0] = i[0]
+
+				if i[1] < Box[0][1]:
+					Box[0][1] = i[1]
+
+				if i[0] > Box[1][0]:
+					Box[1][0] = i[0]
+
+				if i[1] > Box[1][1]:
+					Box[1][1] = i[1]
+
+			return Box
+
+
+		# Function for seeing if a particular point is within the triangle data
+		def IsInATriangle(data, PointTuple):
+			(x, y) = PointTuple
+			del PointTuple
+
+			# Making system of equations to find if a point is between the three coordinates
+			(A, B, C) = data["data"]
+
+			if IsBetween(A, B, C, x, y):
+				if IsBetween(B, C, A, x, y):
+					if IsBetween(C, A, B, x, y):
+						return (True, data["color"])
+			return (False, 0)
+
+		# Sees if C is on the same side of A and B as the point (x, y)
+		# m & b variables are variables used in y = mx + b
+		@jit(nopython=True)
+		def IsBetween(A, B, C, x, y):
+			if B[0] == A[0]:
+				if (A[0] >= C[0]) == (A[0] >= x):
+					return True
+				return False
+			
+			else:
+				m = (B[1] - A[1]) / (B[0] - A[0])
+				b = A[1] - m * A[0]
+
+				if (C[1] >= m * C[0] + b) == (y >= m * x + b):
+					return True
+
+				if y == m * x + b:
+					return True
+
+				return False
+
+		for i in range(len(self.data)):
+			print(f"{i + 1} / {len(self.data)} | {100 * (i + 1) / len(self.data):.2f}%   ", end="\r")
+			i = self.data[i]
+
+			# Gets the extreme corners of a triangle to find a box to search for pixels within
+			Box = GetBox(i["data"])
+
+			# Number to multiply the Box values by
+			Mult = [self.imX / self.xLen, self.imY / self.yLen]
+
+			Box = [ [ int(Box[i][j] * Mult[j]) for j in range(2) ] for i in range(2) ]
+
+			del Mult
+
+			# Adding one to each range so that the last pixel found in 'Box' is searched
+			for j in range(Box[0][0], Box[1][0] + 1):
+				# makes sure j is in range
+				if 0 < j <= self.imX:
+					for k in range(Box[0][1], Box[1][1] + 1):
+						# makes sure k is in range
+						if 0 < k <= self.imY:
+							# IsInATriangle() returns [bool, ColorValue] which is why if statement looks for n[0]
+							n = IsInATriangle(i, (j * self.xLen / self.imX, k * self.yLen / self.imY))
+							if n[0]:
+								try:
+									if 0 <= self.imY - k - 1 < self.imY:
+										# Sets Pixel to the color of n[1] which is the color value
+										pixel[j, self.imY - k - 1] = n[1]
+								except:
+									1
+		im.save(f"{self.name}-3D.png")
+		print()
+		print("-" * 25)
+		return
+
+	# Function for formatting the data such that the triangles are accessable to the other functions, makes `data` into a list of triangles in 3D space
+	def CubicTriangleAssembly(self):
+		for i in range(self.xLen - 1):
+			for j in range(self.yLen - 1):
+				if self.data[i][j] != 0:
+					# more gamer coding
+					yield {
+						"data":((i, j, self.data[i][j] * self.yHeightMultiplyer), (i+1, j, self.data[i+1][j] * self.yHeightMultiplyer), (i, j+1, self.data[i][j+1] * self.yHeightMultiplyer)),
+						"color": self.ColorFunc(self.data[i][j])
+					}
+					yield {
+						"data":((i+1, j+1, self.data[i+1][j+1] * self.yHeightMultiplyer), (i, j+1, self.data[i][j+1] * self.yHeightMultiplyer), (i+1, j, self.data[i+1][j] * self.yHeightMultiplyer)),
+						"color": self.ColorFunc(self.data[i][j])
+					}
+		return
+
+	# Takes the info from CubicTriangleAssembly then transforms into 2D linear equations for boundries of triangles
+	def SquaredTriangleAssembly(self, triangles):
+		# Makes 2D Triangles out of 3D array
+		return [{"data": self.TransformFunc(i["data"]), "color": i["color"]} for i in triangles][::-1]
+
+	# Function for the math to make the points from 3D to 2D
+	def TransformFunc(self, triuple: tuple):
+		# Just cosine of 30 degrees
+		cosN = 0.866025403784
+		sinN = 0.5
+		responces = []
+		for n in triuple:
+			# responces.append((j - i + xLen) * .5, (j * sinN + i * sinN + index) / (cosN * 2))
+			responces.append(((n[1] - n[0] + self.xLen) * .5, (n[1] * sinN + n[0] * sinN + n[2]) / (cosN * 2)))
+		return tuple(responces)
