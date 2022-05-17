@@ -36,7 +36,6 @@ class fractal:
 			pass
 		os.chdir(self.FileName)
 
-	@ExecTime
 	# Main function for Running Turtles
 	def main(self, x: float = 0, y: float = 0, first: bool = False):
 
@@ -44,6 +43,7 @@ class fractal:
 
 		return
 
+	@ExecTime
 	# Function that evaluates and draws graph
 	def eval(self, turtle: bool = False):
 
@@ -731,7 +731,6 @@ class TDObject:
 		self.RateOfColorChange = RateOfColorChange
 
 	# Function for evaluating
-	@ExecTime
 	def eval(self):
 
 		# Actual Dimensions of end Image
