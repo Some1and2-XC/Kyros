@@ -8,6 +8,8 @@
  - Support for making 3D versions of `fractals`
 
 # Basic Usage::
+
+### Setup
 ```python
 import Kyros
 
