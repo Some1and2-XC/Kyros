@@ -12,7 +12,10 @@
 import Kyros
 
 f = Kyros.fractal()
+```
 
+### For Setting Parameters
+```python
  # Function for Setting all the data at once to Preset Settings
 f.SetAll()
 
@@ -24,8 +27,11 @@ f.TD = True
 
  # Function for setting the function used by Kyros [Very Optional]
 f.SetFunction(func=function)
+```
 
- # Function that evaluates and saves the Graph
+### For Evaluating the Function
+```python
+ # Function that evaluates and saves the Function as an image
 f.eval()
 
  # Function that opens a Turtle Window as a Display
