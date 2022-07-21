@@ -1,3 +1,8 @@
+# Custom Ignored Files
+*.bat
+run.py
+F -- */
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

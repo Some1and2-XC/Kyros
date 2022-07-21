@@ -18,12 +18,6 @@ from .ThreeDeeify import TDObject
 from .videoify import videoify
 from .ExecTime import ExecTime
 
-from colorama import __init__ as ColorSetup
-from colorama import Fore, Back, Style
-
-ColorSetup(autoreset=True)
-
-
 class fractal:
 
 	def __init__(self):
@@ -123,7 +117,7 @@ class fractal:
 
 	def PrintHeader(self, n = None):
 		# Function for printing Header
-		print(Back.YELLOW + Fore.BLACK + f"{self.__version__} - {self.FileName}#{self.count}\n{self.line}")
+		print(f"{self.__version__} - {self.FileName}#{self.count}\n{self.line}")
 		return
 
 	def SetAll(self, settings: dict = None, clr = None):
