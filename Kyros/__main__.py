@@ -17,8 +17,6 @@ c = color(
 
 c.ModulusValue = 3
 
-# clr.ModulusValue = 3
-
 settings = {
 	"count": 0,
 	'ci': -0.6359321976472476,
