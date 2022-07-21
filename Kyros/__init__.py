@@ -132,10 +132,7 @@ class fractal:
 				"SizeX": 512,
 				"MaxI": 1000,
 				"BoxRange": ((4, 4), (-2, -2)),
-				"GenType": "SD IT",
-				"ColorType": "basic",
-				"ColorStyle": "rotational",
-				"ShadowStyle": "none"
+				"GenType": "SD IT"
 			}
 
 		if not clr:
@@ -279,10 +276,11 @@ class fractal:
 		# Function for returning a color
 		return self.color.x(b)
 
-	def Animate(self, frames, lMost = -1, rMost = 1, through="rabbit"):
+	def Animate(self, frames, lMost = -1, rMost = 1, through="modulus"):
 		# Function for Rendering Several Fractals Back to Back
 
 		if through == "rabbit":
+			assert False # feature doesn't function and is therefore temporarily unavalible
 			# If the thing to animate through it rabbit
 			images = []
 			mult = (rMost - lMost) / frames
