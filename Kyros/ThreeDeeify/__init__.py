@@ -7,17 +7,16 @@ from math import log2
 
 class TDObject:
 	def __init__(
-		self, name: str,  data, ColorFunc, MaxI, ColorType, RateOfColorChange, imX = 1024, n: int = None):
+		self, name: str,  data, ColorFunc, MaxI, RateOfColorChange, imX = 1024, n: int = None):
 		self.name = name
 		self.data = data
 		self.ColorFunc = ColorFunc
 		self.MaxI = MaxI
-		self.ColorType = ColorType
 		self.RateOfColorChange = RateOfColorChange
 
 		self.n = n
 
-		self.imX = int(imX) # Be default is set to 1024
+		self.imX = int(imX) # default is set to 1024
 
 	# Function for evaluating
 	def eval(self):
@@ -29,7 +28,7 @@ class TDObject:
 		self.xLen = len(self.data)
 		self.yLen = len(self.data[0])
 
-		self.yHeightMultiplyer = 2 ** 0 * (self.yLen / Logify(self.MaxI))
+		self.yHeightMultiplyer = 2 ** 0 * (self.yLen / log2(self.MaxI))
 
 		def WriteInitialisation(n):
 			1
@@ -144,6 +143,13 @@ class TDObject:
 
 	# Function for formatting the data such that the triangles are accessable to the other functions, makes `data` into a list of triangles in 3D space
 	def CubicTriangleAssembly(self):
+
+		def Logify(n: float) -> float:
+			# function for returning log base2 of `n` without running into errors for having `n` being 0
+			if n:
+				return log2(n)
+			return 0
+
 		for i in range(self.xLen - 1):
 			for j in range(self.yLen - 1):
 				if self.data[i][j] != 0:
@@ -172,12 +178,5 @@ class TDObject:
 		sinN = 0.5
 		responces = []
 		for n in triuple:
-			# responces.append((j - i + xLen) * .5, (j * sinN + i * sinN + index) / (cosN * 2))
 			responces.append(((n[1] - n[0] + self.xLen) * .5, (n[1] * sinN + n[0] * sinN + n[2]) / (cosN * 2)))
 		return tuple(responces)
-
-def Logify(n: float) -> float:
-	if n == 0:
-		return 0
-	else:
-		return log2(n)
