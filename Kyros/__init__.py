@@ -276,7 +276,7 @@ class fractal:
 		# Function for returning a color
 		return self.color.x(b)
 
-	def Animate(self, frames, lMost = -1, rMost = 1, through="rabbit"):
+	def Animate(self, frames, lMost = -1, rMost = 1, through="modulus"):
 		# Function for Rendering Several Fractals Back to Back
 
 		if through == "rabbit":

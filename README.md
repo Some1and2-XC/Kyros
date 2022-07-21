@@ -13,12 +13,13 @@
 
 # Basic Usage::
 
-### For Quick Testing [running just the `__main__.py`]
+### For Quick Testing [running just the `__main__.py` file]
 ```python
 py -m Kyros
 ```
 
 ### Setup
+ - Initialises the Fractal Object
 ```python
 import Kyros
 
@@ -26,6 +27,7 @@ f = Kyros.fractal()
 ```
 
 ### For Setting Parameters
+ - Settings Basic Parameters
 ```python
  # Function for Setting all the data at once to Preset Settings
 f.SetAll()
@@ -35,6 +37,7 @@ f.TD = True
 ```
 
 ### For Evaluating the Function
+ - To Evaluate the Funcion set after all the Required Settings are Set
 ```python
  # Function that evaluates and saves the Function as an image
 f.eval()
@@ -43,7 +46,9 @@ f.eval()
 f.TurtleSetup()
 ```
 
-## For Evaluating the Function as a Video
+### For Evaluating the Function as a Video
+ - To make a video from the fractal, use the `Kyros.fractal.Animate()` function
+ - Set the amount of frames as well as the style of Video Created
 ```python
 f.Animate(frames = 1000, through = "modulus")
 ```
