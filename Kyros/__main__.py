@@ -37,6 +37,4 @@ f.eval()
 
 # f.Animate(1000, lMost = 1, rMost = 10, through = "modulus")
 
-print(f"\n{f.FileName}\n	~~~FINISHED~~~")
-
-input()
+input(f"\n{f.FileName}\n	~~~FINISHED~~~")
