@@ -2,13 +2,13 @@
 
 # `f` is for `fractal` & `c` is for `color`
 
-import Kyros
+from . import fractal, color
 
-f = Kyros.fractal()
+f = fractal()
 
 MaxI = 1000
 
-c = Kyros.color(
+c = color(
 	RateOfColorChange = 9,
 	MaxI = MaxI,
 	ColorStyle = "rotational",
@@ -39,6 +39,6 @@ f.eval()
 
 # f.Animate(1000, lMost = 1, rMost = 10, through = "modulus")
 
-print(f"~~~FINISHED~~~ : {f.FileName}")
+print(f"\n{f.FileName}\n	~~~FINISHED~~~")
 
 input()

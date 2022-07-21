@@ -6,12 +6,13 @@ from pathlib import Path
 
 setup(
 	name="Kyros",
-	packages=find_packages(include=["Kyros"]),
-	version="3.0.4",
+	packages=find_packages(),
+	version="0.0.0",
 	description="A Class Based Python Library for Fractal Generation",
 	author="@some1and2",
+	author_email='04x0xx@gmail.com',
 	license="GPL-3.0",
-	install_requires=["pillow >= 9.1.0", "numba"],
+	install_requires=["Pillow == 9.1.0", "numba == 0.55.2", "colorama >= 0.4.4", "opencv-python == 4.6.0.66 "],
 	setup_requires=[],
 	long_description = ( Path(__file__).parent / "README.md" ).read_text(),
 	long_description_content_type='text/markdown'

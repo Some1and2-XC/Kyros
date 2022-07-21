@@ -6,7 +6,7 @@
  - Various Color Pallets for the Generators
  - Output File for Generator Data, Saves the Settings used to an Output file so that the settings can be Reused and Images can be Recreated at Higher Resolution etc
  - Support for making 3D versions of `fractals`
-
+ - Added ability to export series of sets as `.mp4` video files
 # Basic Usage::
 
 ### Setup
