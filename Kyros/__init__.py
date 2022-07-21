@@ -132,10 +132,7 @@ class fractal:
 				"SizeX": 512,
 				"MaxI": 1000,
 				"BoxRange": ((4, 4), (-2, -2)),
-				"GenType": "SD IT",
-				"ColorType": "basic",
-				"ColorStyle": "rotational",
-				"ShadowStyle": "none"
+				"GenType": "SD IT"
 			}
 
 		if not clr:
@@ -283,6 +280,7 @@ class fractal:
 		# Function for Rendering Several Fractals Back to Back
 
 		if through == "rabbit":
+			assert False # feature doesn't function and is therefore temporarily unavalible
 			# If the thing to animate through it rabbit
 			images = []
 			mult = (rMost - lMost) / frames
