@@ -309,12 +309,33 @@ class fractal:
 			]
 
 		if through == "modulus":
+
+			def MakeIMG(data: list):
+				im = Image.new("RGBA", (self.SizeX, self.SizeY), (255, 255, 255, 255))
+				pixel = im.load()
+				for i in range(len(data)):
+					for j in range(len(data[0])):
+						pixel[j, self.SizeY - i - 1] = self.ColorIn(data[i][j])
+				savedFile = f"{self.FileName} - #{self.count}.png"
+				im.save(savedFile)
+				self.count += 1
+				return im
+
+			self.SizeY = int((self.BoxRange[0][1] / self.BoxRange[0][0]) * self.SizeX)
+
 			images = []
 			mult = (rMost - lMost) / frames
 
+			data = []
+			for (oneline, _) in self.MakeFrame():
+				data.append(oneline)
+
 			for frame in range(frames):
 				self.color.ModulusValue = frame * mult + lMost
-				images.append(self.eval(n = frame))
+				images.append(MakeIMG(data))
+				print("[Frames]:: {} / {} | {:.2f}%      ".format(frame, frames, (1 + frame) / frames), end="\r")
+
+			print()
 
 			# Variable for the Flat Images
 			flat = [image[0] for image in images]

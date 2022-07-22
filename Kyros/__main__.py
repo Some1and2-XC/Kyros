@@ -6,7 +6,7 @@ from . import fractal, color
 
 f = fractal()
 
-MaxI = 1000
+MaxI = 500
 
 c = color(
 	RateOfColorChange = 9,
@@ -19,22 +19,23 @@ c.ModulusValue = 3
 
 settings = {
 	"count": 0,
-	'ci': -0.6359321976472476,
-	'cj': 0.08004012786314796,
-	"IsJulia": True,
-	"SizeX": 512,
-	"MaxI": 500,
-	"BoxRange":((0.5, 0.5), (-0.22265625, 0.19921875)),
-	"GenType": "SD TD",
+	'ci': 0,
+	'cj': 0,
+	"MaxI": MaxI,
+	"IsJulia": False,
+	"SizeX": 4096,
+	"RateOfColorChange": 9,
+	"BoxRange": ((0.00086806, 0.00043403), (-0.09848914930555545, 0.6495883493661031)),
+	"GenType": "SD TD"
 }
 
 
 f.SetAll(settings = settings, clr = c)
 
-f.TD = True
+# f.TD = True
 
-f.eval()
+# f.eval()
 
-# f.Animate(1000, lMost = 1, rMost = 10, through = "modulus")
+f.Animate(1000, lMost = 1, rMost = 10, through = "modulus")
 
 input(f"\n{f.FileName}\n	~~~FINISHED~~~")
