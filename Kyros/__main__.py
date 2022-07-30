@@ -23,9 +23,10 @@ settings = {
 	'cj': 0,
 	"MaxI": MaxI,
 	"IsJulia": False,
-	"SizeX": 4096,
+	"SizeX": 512,
 	"RateOfColorChange": 9,
-	"BoxRange": ((0.00086806, 0.00043403), (-0.09848914930555545, 0.6495883493661031)),
+	# "BoxRange": ((0.00086806, 0.00043403), (-0.09848914930555545, 0.6495883493661031)),
+	"BoxRange": ((4, 4), (-2, -2)),
 	"GenType": "SD TD"
 }
 
@@ -36,6 +37,8 @@ f.SetAll(settings = settings, clr = c)
 
 # f.eval()
 
-f.Animate(1000, lMost = 1, rMost = 10, through = "modulus")
+f.TurtleSetup()
+
+# f.Animate(1000, lMost = 1, rMost = 10, through = "modulus")
 
 input(f"\n{f.FileName}\n	~~~FINISHED~~~")
