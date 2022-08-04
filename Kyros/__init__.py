@@ -333,12 +333,12 @@ class fractal:
 			for frame in range(frames):
 				self.color.ModulusValue = frame * mult + lMost
 				images.append(MakeIMG(data))
-				print("[Frames]:: {} / {} | {:.2f}%      ".format(frame, frames, (1 + frame) / frames), end="\r")
+				print("[Frames]:: {} / {} | {:.2f}%\t".format(frame, frames, (1 + frame) / frames), end="\r")
 
 			print()
 
 			# Variable for the Flat Images
-			flat = [image[0] for image in images]
+			flat = [image for image in images]
 
 			# Duration of 40 makes 25fps
 			[ dataset[0].save( \

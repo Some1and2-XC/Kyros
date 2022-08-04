@@ -22,7 +22,7 @@ def GetFunction(GenType):
 			if b == 0:
 				return 0
 
-			elif b == MaxI - 1:
+			elif b == MaxI - 1 and False:
 				return MaxI - 1
 
 			elif zj != xout:
