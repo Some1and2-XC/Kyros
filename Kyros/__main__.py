@@ -4,7 +4,7 @@
 
 from . import fractal, color
 
-f = fractal()
+f = fractal(FileName = "F -- ZHQQ")
 
 MaxI = 500
 

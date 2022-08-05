@@ -20,7 +20,7 @@ from .ExecTime import ExecTime
 
 class fractal:
 
-	def __init__(self):
+	def __init__(self, FileName: str = None):
 
 		self.__version__ = "v0.0.0"
 		self.line = "-" * 25
@@ -30,8 +30,12 @@ class fractal:
 		# Used to specify wether the make Three Dee version
 		self.TD = False
 
-		# Makes File Name with Four Letters Between "A" and "Z" : ABCD.tx
-		self.FileName = "F -- " + "".join( chr(randint(65, 90)) for i in range(4) )
+		if FileName:
+			self.FileName = FileName
+
+		else:
+			# Makes File Name with Four Letters Between "A" and "Z" : ABCD.tx
+			self.FileName = "F -- " + "".join( chr(randint(65, 90)) for i in range(4) )
 
 		# Tries to make a directory with called `self.FileName`
 		try:
@@ -310,14 +314,13 @@ class fractal:
 
 		if through == "modulus":
 
-			def MakeIMG(data: list):
+			def MakeIMG(FileName: str, data: list):
 				im = Image.new("RGBA", (self.SizeX, self.SizeY), (255, 255, 255, 255))
 				pixel = im.load()
 				for i in range(len(data)):
 					for j in range(len(data[0])):
 						pixel[j, self.SizeY - i - 1] = self.ColorIn(data[i][j])
-				savedFile = f"{self.FileName} - #{self.count}.png"
-				im.save(savedFile)
+				im.save(FileName)
 				self.count += 1
 				return im
 
@@ -331,9 +334,15 @@ class fractal:
 				data.append(oneline)
 
 			for frame in range(frames):
+				FileName = f"{self.FileName} - #{self.count}.png" # Sets Filename
+				if os.path.exists(FileName):
+					images.append(Image.open(FileName))
+					print("[Load]:: {} / {} | {:.2f}%\t".format(frame, frames, 100 * (1 + frame) / frames), end="\r")
+					self.count += 1
+					continue
 				self.color.ModulusValue = frame * mult + lMost
-				images.append(MakeIMG(data))
-				print("[Frames]:: {} / {} | {:.2f}%\t".format(frame, frames, (1 + frame) / frames), end="\r")
+				images.append(MakeIMG(FileName, data))
+				print("[Frames]:: {} / {} | {:.2f}%\t".format(frame, frames, 100 * (1 + frame) / frames), end="\r")
 
 			print()
 
