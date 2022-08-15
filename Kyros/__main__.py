@@ -4,13 +4,13 @@
 
 from . import fractal, color
 
-f = fractal(FileName = "F -- ZHQQ")
+f = fractal(FileName = None)
 
 MaxI = 500
 
 c = color(
 	RateOfColorChange = 9,
-	MaxI = 10000,
+	MaxI = MaxI,
 	ColorStyle = "rotational",
 	ShadowStyle = "modulus"
 	# ShadowStyle = "none"
@@ -22,11 +22,10 @@ settings = {
 	"count": 0,
 	'ci': 0,
 	'cj': 0,
-	"MaxI": 1000,
+	"MaxI": MaxI,
 	"IsJulia": False,
-	"SizeX": 2048,
-	"RateOfColorChange": 9,
-	"BoxRange": ((0.027777777777777776, 0.015625), (-1.4044444444444442, 0.0007506672597865048)),
+	"SizeX": 4096,
+	"BoxRange": ((4, 4), (-2, -2)),
 	"GenType": "SD TD"
 }
 
@@ -35,10 +34,10 @@ f.SetAll(settings = settings, clr = c)
 
 # f.TD = True
 
-# f.eval()
+f.eval()
 
 # f.TurtleSetup()
 
-f.Animate(1000, lMost = 10, rMost = 50, through = "modulus")
+# f.Animate(1000, lMost = 10, rMost = 50, through = "modulus")
 
 input(f"\n{f.FileName}\n\t~~~FINISHED~~~")

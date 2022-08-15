@@ -12,7 +12,7 @@ setup(
 	author="@some1and2",
 	author_email='04x0xx@gmail.com',
 	license="GPL-3.0",
-	install_requires=["Pillow == 9.1.0", "numba == 0.55.2", "opencv-python == 4.6.0.66 "],
+	install_requires=["Pillow == 9.1.0", "numba == 0.55.2", "opencv-python == 4.6.0.66"],
 	setup_requires=[],
 	long_description = ( Path(__file__).parent / "README.md" ).read_text(),
 	long_description_content_type='text/markdown'
