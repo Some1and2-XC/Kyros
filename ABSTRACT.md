@@ -1,6 +1,9 @@
 # Guide to Creating a Better Kyros
 ### The Purpose of this abstract is to structure future development to be more organized and productive
 
+###### Below is a demo for a new `README.md` file
+
+---
 
 # Kyros
 
