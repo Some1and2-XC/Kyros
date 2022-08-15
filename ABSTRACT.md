@@ -38,10 +38,10 @@ Project is Currently Being Developed
 
 ## Getting Started
 
-In Order to Get Started, run:: 
-1. ```python
-	git clone https://github.com/Some1and2-XC/Kyros
-	```
+1. In Order to Get Started, run:: 
+   ```python
+   git clone https://github.com/Some1and2-XC/Kyros
+   ```
 1. Install Dependancies from `setup.py` from the `install_requires` line using pip, ex: 
    ```
    pip install Pillow==9.1.0
