@@ -4,11 +4,11 @@
 
 # Kyros
 
-Provide an introductory paragraph, describing:
+Kyros is a Python Script for Generating Varius Kinds of Fractals
 
-* What your project does
-* Why people should consider using your project
-* Link to project home page
+* Uses Various Optimisations for Satisfactory Performance
+* Generates Unqiute Fractal Images with Tonnes of Customisations
+* [Github](https://github.com/Some1and2-XC/Kyros/blob/refactor/ABSTRACT.md)
 
 ## Table of Contents
 
@@ -31,35 +31,22 @@ Provide an introductory paragraph, describing:
 1. [Authors](#authors)
 1. [Acknowledgments](#acknowledgements)
 
-## About the Project
-
-Here you can provide more details about the project
-* What features does your project provide?
-* Short motivation for the project? (Don't be too long winded)
-* Links to the project site
-
-```
-Show some example code to describe what your project does
-Show some of your APIs
-```
-
-**[Back to top](#table-of-contents)**
-
 ## Project Status
 
-Show the build status if you have a CI server:
-
-[![Build Status](http://your-server:12345/job/badge/icon)](http://your-server/job/badge/icon/)
-
-Describe the current release and any notes about the current state of the project. Examples: currently compiles on your host machine, but is not cross-compiling for ARM, APIs are not set, feature not implemented, etc.
-
-**[Back to top](#table-of-contents)**
+Project is Currently Being Developed
+* The `main` branch generally has functional and Stable Version
 
 ## Getting Started
 
-This section should provide instructions for other developers to
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+In Order to Get Started, run:: 
+1. ```python
+git clone https://github.com/Some1and2-XC/Kyros
+```
+1. Install Dependancies from `setup.py` from the `install_requires` line using pip, ex: 
+   ```
+   pip install Pillow==9.1.0
+   ```
+1. run `__main__.py` from the `Kyros` folder
 
 ### Dependencies
 
