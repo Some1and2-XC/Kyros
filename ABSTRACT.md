@@ -14,21 +14,8 @@ Kyros is a Python Script for Generating Varius Kinds of Fractals
 
 1. [Project Status](#project-status)
 1. [Getting Started](#getting-started)
-    1. [Dependencies](#dependencies)
-    1. [Building](#building)
-    2. [Running Tests](#running-tests)
-        1. [Other Tests](#other-tests)
-    1. [Installation](#installation)
     1. [Usage](#usage)
-1. [Release Process](#release-process)
-    1. [Versioning](#versioning)
-    1. [Payload](#payload)
-1. [How to Get Help](#how-to-get-help)
-1. [Contributing](#contributing)
-1. [Further Reading](#further-reading)
-1. [License](#license)
 1. [Authors](#authors)
-1. [Acknowledgments](#acknowledgements)
 
 ## Project Status
 
