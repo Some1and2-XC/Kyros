@@ -4,16 +4,19 @@
 
 from . import fractal, color
 
-f = fractal(FileName = "F -- AKIZ")
 
-MaxI = 500
+# from os import chdir; chdir(r"E:\.py\Fractals\Kyros\Best Version v0.0.0 Current Development")
+
+f = fractal(FileName = "Test")
+
+MaxI = 1000
 
 c = color(
 	RateOfColorChange = 9,
 	# MaxI = MaxI,
-	MaxI = 2000,
+	MaxI = 1000,
 	ColorStyle = "rotational",
-	ShadowStyle = "modulus"
+	ShadowStyle = "none"
 	# ShadowStyle = "none"
 )
 
@@ -25,20 +28,17 @@ settings = {
 	'cj': 0,
 	"MaxI": MaxI,
 	"IsJulia": False,
-	"SizeX": 2048,
+	"SizeX": 1024,
 	"BoxRange": ((4, 4), (-2, -2)),
-	"GenType": "SD TD"
+	"GenType": "SD IT"
 }
 
 
 f.SetAll(settings = settings, clr = c)
-
 # f.TD = True
-
-# f.eval()
+f.eval()
 
 # f.TurtleSetup()
-
-f.Animate(1000, lMost = 10, rMost = 50, through = "modulus")
+# f.Animate(1000, lMost = 10, rMost = 50, through = "modulus")
 
 input(f"\n{f.FileName}\n\t~~~FINISHED~~~")

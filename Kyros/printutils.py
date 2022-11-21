@@ -4,7 +4,7 @@
 file for printing and writing information to files
 """
 
-def InfoOut(string, end="\n", sep=None):
+def InfoOut(string="", end="\n", sep=None):
 	"""
 	Function called by all other functions to specify what to do with the output
 	## Info
@@ -34,13 +34,13 @@ def PrintHeader(version, FileName, count):
 	print(f"{version} - {FileName}#{count}")
 	line()
 
-def WriteFileInformation(Filename, count, ci, cj, IsJulia, SizeX, MaxI, BoxRange, GenType):
+def WriteFileInformation(FileName, count, ci, cj, IsJulia, SizeX, MaxI, BoxRange, GenType):
 	"""
 	Function for writing the fileinformation to file
 	## Info
 	 - Uses Settings used to generate the file to
 	   write to the file information
-	Filename : The name of the file that is to be written to (no file extension)
+	FileName : The name of the file that is to be written to (no file extension)
 	count    : The Index of image that has been generated
 	ci       : constant `I` (imaginary) value for JuliaSet generation
 	cj       : constant `J` (real) value for JuliaSet generation
@@ -63,7 +63,7 @@ def WriteFileInformation(Filename, count, ci, cj, IsJulia, SizeX, MaxI, BoxRange
 		"GenType": GenType,
 	}
 
-	with open(f"{self.FileName}.md", "a") as text:
-		text.write(f"\n{self.FileName}#{self.count} | {str(NameInfo)}")
+	with open(f"{FileName}.md", "a") as text:
+		text.write(f"\n{FileName}#{count} | {str(NameInfo)}")
 		text.close()
 
