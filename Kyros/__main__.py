@@ -4,33 +4,31 @@
 
 from . import fractal, color
 
-
 # from os import chdir; chdir(r"E:\.py\Fractals\Kyros\Best Version v0.0.0 Current Development")
 
-f = fractal(FileName = "Test")
+f = fractal(FileName = "130k SD-TD")
+# f = fractal()
 
 MaxI = 1000
 
 c = color(
 	RateOfColorChange = 9,
-	# MaxI = MaxI,
-	MaxI = 1000,
+	MaxI = MaxI,
 	ColorStyle = "rotational",
 	ShadowStyle = "none"
-	# ShadowStyle = "none"
 )
 
 c.ModulusValue = 3
 
 settings = {
-	"count": 0,
-	'ci': 0,
-	'cj': 0,
-	"MaxI": MaxI,
-	"IsJulia": False,
-	"SizeX": 1024,
-	"BoxRange": ((4, 4), (-2, -2)),
-	"GenType": "SD IT"
+	"count"    : 0,
+	"cj" : 0.08004012786314796,
+	"ci" :  - 0.6359321976472476,
+	"MaxI"     : MaxI,
+	"IsJulia"  : True,
+	"SizeX"    : 1024,
+	"BoxRange" : ((4, 4), (-2, -2)),
+	"GenType"  : "SD TD"
 }
 
 
