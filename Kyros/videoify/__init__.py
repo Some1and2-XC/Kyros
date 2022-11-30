@@ -6,6 +6,7 @@ import glob
 import re
 
 from ..ExecTime import ExecTime
+from .. import printutils as pu
 
 class videoify:
 
@@ -15,7 +16,7 @@ class videoify:
 
     @ExecTime
     def save(self):
-        self.l()
+        pu.line()
 
         ImageArray = []
 
@@ -23,15 +24,15 @@ class videoify:
         for filename in sorted(glob.glob(f"{self.name}*.png"), key=self.SortByNumber):
             img = cv2.imread(filename)
             ImageArray.append(img)
-            print(" - IMPORTING : {file}".format(file=filename.split("\\")[-1]), end="\r")
+            pu.InfoOut(" - IMPORTING : {file}".format(file=filename.split("\\")[-1]), end="\r")
 
         # Uses the fact that img is a numpy array (`cv2.imread()` returns numpy array)
         # to get parameters to get the shape of the array
         height, width, _ = img.shape
         size = (width, height)
 
-        print()
-        self.l()
+        up.InfoOut()
+        pu.line()
 
         # AVC3 uses the HEVC codec or H.264
         # To make this codec work correctly, the `.dll` file is required (cv2 gets angry without it)
@@ -43,7 +44,7 @@ class videoify:
             codec = "avc3"
         except FileNotFoundError:
             # On exception uses builtin codec
-            print(f"\nExporting with `mp4v`, add {CodecFilename} near main file")
+            pu.InfoOut(f"\nExporting with `mp4v`, add {CodecFilename} near main file")
             codec = "mp4v"
 
         video = cv2.VideoWriter(f"{self.name} - {codec.upper()}.mp4", cv2.VideoWriter_fourcc(*codec), 25, size)
@@ -60,7 +61,3 @@ class videoify:
         parts = [int(parts)]
         parts[1::2] = map(int, parts[1::2])
         return parts
-
-    def l(self):
-        # Function for Printing Lines
-        print("-" * 50)
