@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from colorsys import hsv_to_rgb
+from math import cos
 
 class color:
 	# Class for Standard Colors
@@ -20,9 +21,9 @@ class color:
 		PossibleShadowStyles = {"none", "minimal", "modulus"}
 
 		if ColorStyle not in PossibleColorStyles:
-			raise TypeError(f"`{ColorStyle}` not in  `PossibleColorStyles`")
+			raise ValueError(f"`{ColorStyle}` not in  `PossibleColorStyles`")
 		if ShadowStyle not in PossibleShadowStyles:
-			raise TypeError(f"`{ShadowStyle}` not in  `PossibleShadowStyles`")
+			raise ValueError(f"`{ShadowStyle}` not in  `PossibleShadowStyles`")
 
 		# Setting `self` Attributes
 
@@ -93,7 +94,7 @@ class color:
 			# Returns a transparent if i == 0
 			return (255, 255, 255, 255)
 
-		if b == (self.MaxI) - 1:
+		if b >= (self.MaxI) - 1:
 			# Returns Black if the Maximum value is the `b` value
 			return (0, 0, 0, 255)
 

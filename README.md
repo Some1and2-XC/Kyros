@@ -132,7 +132,7 @@ py setup.py bdist_wheel
 pip install dist\__version__
 ```
 
-# Test::
+# Quickstart::
 #### To Make a Copy of the `Social preview` of the Library:
 ```python
 import Kyros
