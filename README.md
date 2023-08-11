@@ -1,4 +1,8 @@
-# Some1and2's Kyros - A Fractal Generator
+<h1>
+	<img src="https://github.com/Some1and2-XC/Kyros/assets/89313812/5ae3c003-1f34-4130-b46f-9715e105d03b" width="200em">
+ 	 - A Fractal Generator
+</h1>
+
 #### Basic Class Oriented Fractal Generator with Binary Single Threaded Acceleration made with python
 # Key Features:: 
  - Uses Compiler Optimisation for faster Execution Time
