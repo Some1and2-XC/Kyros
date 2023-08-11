@@ -1,142 +1,260 @@
 #!/usr/bin/env python3
 
+"""
+Main file holding the `fractal` class
+"""
 from PIL import Image
 
 # Imports for File Information
 import os
-from random import randint
 
 # Imports for Drawing to the Screen
 import turtle
 
-from math import cos, log2
-from colorsys import hsv_to_rgb
-
-from .functions import GetFunction
+# Relative Imports
+from . import printutils as pu
+from .math import GetFunction
 from .coloring import color
 from .ThreeDeeify import TDObject
 from .videoify import videoify
 from .ExecTime import ExecTime
 
+
 class fractal:
 
 	def __init__(self, FileName: str = None):
 
+		"""
+		Main Function for initialising Fractal Generation
+		"""
+
+		def GetRandomFileName(FileNamePrefix: str = "F -- ", FileNameLength: int = 4):
+			"""
+			Function for setting a random filename if none is supplied
+
+			FileNamePrefix :: The first few characters from a filename to be generated
+			FileNameLength :: Length of the filename to be returned
+			"""
+
+			from random import randint
+
+			return FileNamePrefix + "".join( \
+				chr(randint(65, 90))\
+				for i in range(FileNameLength)
+			)
+
+		# Initial Settings
 		self.__version__ = "v0.0.0"
 		self.line = "-" * 25
-		self.ZoomAmnt = 2
-		self.win = None
+		self.TD = False # Used to specify wether the make 3D version
 
-		# Used to specify wether the make Three Dee version
-		self.TD = False
+		# Turtle Settings
+		self.ZoomAmnt = 2 # The amount that the image zooms each click (with turtle / web version)
+		self.win = None # window variable for turtle
 
-		if FileName:
-			self.FileName = FileName
+		# Sets filename based on `GetRandomFileName()` function if `FileName` isn't passed to `__init__()``
+		if FileName: self.FileName = FileName
+		else: self.FileName = GetRandomFileName()
 
-		else:
-			# Makes File Name with Four Letters Between "A" and "Z" : ABCD.tx
-			self.FileName = "F -- " + "".join( chr(randint(65, 90)) for i in range(4) )
-
-		# Tries to make a directory with called `self.FileName`
-		try:
-			os.mkdir(self.FileName)
-		except FileExistsError:
-			# Exception Catch for if the folder that is attempted to be
-			# created already exists
-			...
+		# Tries to make a directory for putting files into
+		try: os.mkdir(self.FileName) # Tries to make a directory with called `self.FileName`
+		except FileExistsError: ...  # If the file already exists, do nothing
 
 		# Sets `self.FileName` to the folder that contains the files
-		self.FileName = f"{self.FileName}\\{self.FileName}"
+		self.FileName = os.path.join(self.FileName, self.FileName)
 
 	@ExecTime
-	def eval(self, turtle: bool = False, x: float = None, y: float = None, first = False, n = None):
-		# Function that evaluates and draws graph
+	def eval(self, x: float = None, y: float = None, first = True) -> tuple:
 
-		# Makes SizeY the correct amount of pixels in relation to SizeX
-		self.SizeY = int((self.BoxRange[0][1] / self.BoxRange[0][0]) * self.SizeX)
+		"""
+		Function for evaluating the settings of the fractal
+		& saving the image
 
-		if turtle:
-			# Gets which Percentage of the Screen that was Clicked on
-			self.clickLocation = (2 * x / self.SizeX, 2 * y / self.SizeY)
+		x     :: x value for where the image is desired to be generated (in mathematical space)
+		y     :: y value for where the image is desired to be generated (in mathematical space)
+		first :: Flag Specifying wether or not the file that is being generated from `eval` is the first image being generated
 
-			# if this is not the first click, this is used to make the start conditions easier to setup
-			# This makes some ajustments to where the boxrange is after you click (zooming twice as close and moving)
+		returns -> tuple :: (2D_Imagedata, 3D_Imagedata)
+		###### (Returns only (2D_Imagedata, None) if `self.TD` is set to False)
+		"""
+
+		def GetInitialValues():
+			"""
+			Sets some initial values for generation
+			"""
+
+			self.SizeY = int((self.BoxRange[0][1] / self.BoxRange[0][0]) * self.SizeX) # Sets SizeY based on what SizeX is
 			if not first:
-				self.BoxRange = ((self.BoxRange[0][0] / self.ZoomAmnt, self.BoxRange[0][1] / self.ZoomAmnt), (self.BoxRange[1][0] + (self.BoxRange[0][0] - (self.BoxRange[0][0] / self.ZoomAmnt)) / 2 + self.BoxRange[0][0] * self.clickLocation[0] / self.ZoomAmnt, self.BoxRange[1][1] + (self.BoxRange[0][1] - (self.BoxRange[0][1] / self.ZoomAmnt)) / 2 + self.BoxRange[0][1] * self.clickLocation[1] / self.ZoomAmnt))
-
-		self.WriteFileInformation()
-
-		# Setting Up Image
-		im = Image.new("RGBA", (self.SizeX, self.SizeY), (255, 255, 255, 255))
-		pixel = im.load()
-
-		# Sets 'oneline' to the line of values generated in 'MakeFrame' and 'i' to which line it had made (counting from 0 to SizeX - 1)
-		# Only generated one line of the frame at a time into memory at a time instead of generating the entire image. 
-
-		self.PrintHeader()
-
-		# Only Sets Data if it is going to be used to Generate a 3D version
-		if self.TD:
-			data = []
-
-		# O(n) for memory usage
-		# (for the variables defined, image data is still O(n^2) (Obvious reasons))
-
-		for (oneline, i) in self.MakeFrame():
+				"""
+				If the image is not the first image generated in a series (if modification to where the image exists is required. )
+				"""
+				ClickLocation = (2 * x / self.SizeX, 2 * y / self.SizeY) # Finds which percentage of the screen was "Clicked" on
+				self.BoxRange = (
+					(
+						self.BoxRange[0][0] / self.ZoomAmnt, # Sets Math X length value (distance between left and right)
+						self.BoxRange[0][1] / self.ZoomAmnt  # Sets Math Y length value (distance between bottom and top)
+					), 
+					(
+						self.BoxRange[1][0] + (self.BoxRange[0][0] - (self.BoxRange[0][0] / self.ZoomAmnt)) / 2 + self.BoxRange[0][0] * ClickLocation[0] / self.ZoomAmnt, # Sets the Math leftmost value
+						self.BoxRange[1][1] + (self.BoxRange[0][1] - (self.BoxRange[0][1] / self.ZoomAmnt)) / 2 + self.BoxRange[0][1] * ClickLocation[1] / self.ZoomAmnt  # Sets the Math bottomost value
+					)
+				) # BoxRange is the mathematical coordinates that define where the shape exists, in this case changing it based on ClickLocation
+			return True
+		
+		def PutInitialInformation():
+			"""
+			Function for writing information (generally to console)
+			"""
+			pu.WriteFileInformation(self.FileName, self.count, self.ci, self.cj, self.IsJulia, self.SizeX, self.MaxI, self.BoxRange, self.GenType) # Prints file information
+			pu.PrintHeader(self.__version__, self.FileName, self.count) # Prints some header information
+		
+		def RunMath():
+			"""
+			Function for Running math and saving image data
+			"""
 			if self.TD:
-				data.append(oneline)
-			for j in range(self.SizeX):
-				pixel[j, self.SizeY - i - 1] = self.ColorIn(oneline[j])
+				"""
+				If the Flag for defining wether or not to generate 3D Version is True, make a duplicate of `self.MakeFrame()` to send to `TDObeject()`
+				"""
+				data = [i for i in self.MakeFrame()] # Sets the `data` variable to be the output of `self.MakeFrame()`
+				im.putdata( [ self.ColorIn(i) for i in data ] )
 
-		print(f"\n{self.line}")
+				def FixArrayDimensions():
+					"""
+					Function for setting the dimensions of an array to a specified value
+					"""
+					...
 
-		# Gets text added to the actual file that is Saved
-		savedFile = f"{self.FileName} - #{self.count}.png"
+				# The dimension of the array has to be resized to make sure that the `TDObject().eval()` gets the right kind of data
+				outdata = []
+				for i in range(self.SizeY):
+					outdata.append([])
+					for j in range(self.SizeX):
+						outdata[i].append(data[i * self.SizeX + j])
 
-		# Saves Image
-		im.save(savedFile)
+				# The problem is probably caused by the fact that you are passing in "data" which has been converted to its `self.ColorIn(i)` of `for i in self.MakeFrame()`
+				TDO = TDObject(f"{self.FileName} - {self.count}", outdata, self.ColorIn, self.MaxI, n = self.count).eval()
 
-		if self.win:
-			# Sets the background of the Turtle window as the newly created image
-			self.win.bgpic(savedFile)
+			else:
+				data = [ self.ColorIn(i) for i in self.MakeFrame() ]
+				im.putdata( data ) # because TD is False, the program doesn't have to save the data as the `data` variable, instead extract the values of the data directly into the image. 
 
-			# Updates the Turtle Screen
+		def TryLoadData():
+			"""
+			Function for opening pickle data for a semi completed file
+			"""
+
+			import pickle
+
+			try:
+				with open(f"{self.FileName}.pkl", "rb") as outfile:
+					...
+			except:
+				...
+
+		def SaveInbetweenData():
+			"""
+			Function for pickling the image data
+			"""
+
+			import pickle
+
+			with open(f"{self.FileName}.pkl", "wb") as outfile:
+				pickle.dump(im)
+				pickle.dump(i)
+				pickle.dump(j - 1)
+
+		def PutEndInformation():
+			"""
+			Writes the information about file generation
+			"""
+			pu.InfoOut() # Prints Space
+			pu.line() # Prints Line
+
+		def UpdateTurtle():
+			"""
+			Function for setting the background image of the turtle window to be the generated image 
+			"""
+			self.win.bgpic(SavedFile)
 			self.win.update()
 
-		# TDO is for `Three Dee Object`
-		TDO = None
-		if self.TD:
-			# Sets TDO to the image data
-			TDO = TDObject(f"{self.FileName} - {self.count}", data, self.ColorIn, self.MaxI, self.color.RateOfColorChange, n = self.count).eval()
+		# Sets Required Variables
+		TDO = None # Sets the initial value of TDO so that if self.TD is not True, the function still returns something
+		SavedFile = f"{self.FileName} - #{self.count}.png" # Sets Filename to save to
 
-		self.count += 1
+		GetInitialValues()
+		im = Image.new("RGBA", (self.SizeX, self.SizeY), (255, 255, 255, 255)) # Makes new PIL object with a background color of (255, 255, 255, 255)
+		PutInitialInformation()
 
-		# Returns the two images that could potentially be generated from `self.eval()`
-		return (im, TDO)
+		try: RunMath()
+		except KeyboardInterrupt:
+			"""
+			In case user wants to ctrl-z out of the program durring execution
+			"""
 
-	def main(self, x: float = 0, y: float = 0, first: bool = False):
-		# Main function for Running Turtles
-		self.eval(turtle = True, x = x, y = y, first = first)
-		return
+		PutEndInformation()
 
-	def PrintHeader(self, n = None):
-		# Function for printing Header
-		print(f"{self.__version__} - {self.FileName}#{self.count}\n{self.line}")
-		return
+		im.save(fp = SavedFile) # Saves Image (fp is file path)
+		if self.win: UpdateTurtle()
+		self.count += 1 # Incremements the counter for the amount of images that have been generated
+		return (im, TDO) # Returns the data of the two images that could be generated from `self.eval()`
+
+	def MakeFrame(self):
+		"""
+		Function for generating each frame
+		Returns a generator that only evaluates the math when it is necessary
+		yields a value based on MagicFunctionGenerator
+		reduces the need for having a massive amount of data being store redundantly in mulitple arrays. 
+		"""
+
+		global PixelIteratorI, PixelIteratorJ
+
+		for PixelIteratorI in range(int(self.SizeY + .5)): # Goes through each horizontal line
+			for PixelIteratorJ in range(self.SizeX): # Goes through each pixel in the line
+				# Gets Generator Values based on relative position of BoxRange
+				# Adjusts values based on if the IsJulia flag is set. 
+				if self.IsJulia is False:
+					self.ci = PixelIteratorI * self.BoxRange[0][1] / (self.SizeY - 1) + self.BoxRange[1][1]
+					self.cj = PixelIteratorJ * self.BoxRange[0][0] / (self.SizeX - 1) + self.BoxRange[1][0]
+					zi = 0
+					zj = 0
+				if self.IsJulia is True:
+					zi = PixelIteratorI * self.BoxRange[0][1] / (self.SizeY - 1) + self.BoxRange[1][1]
+					zj = PixelIteratorJ * self.BoxRange[0][0] / (self.SizeX - 1) + self.BoxRange[1][0]
+				
+				# Sends variables to Magic Generator Function
+				yield self.MagicFunctionGenerator(self.MaxI, self.cj, self.ci, zj, zi)
+
+			# Prints progress bar
+			pu.InfoOut("{spaces}{CurrentWorkingNumber} / {TotalNumber} | {percentage:.2f}%".format(
+					spaces               = " " * (len(str(self.SizeY)) - len(str(PixelIteratorI + 1))),
+					CurrentWorkingNumber = PixelIteratorI + 1,
+					TotalNumber          = self.SizeY,
+					percentage           = 100 * (PixelIteratorI + 1) / self.SizeY
+				),
+				end="\r"
+			)
+		if self.IsJulia is False: self.ci = self.cj = 0
 
 	def SetAll(self, settings: dict = None, clr = None):
 		# Defines all starting parameters
+		"""
+		Defines all Starting Parameters
+
+		settings :: a dictionary of all the settings to be passed to the generator
+		clr      :: a `color` object that has all the parameters set to be able to create color generation settings
+		"""
 
 		if settings is None:
 			settings = {
-				"count": 0,
-				"ci": 0,
-				"cj": 0,
-				"IsJulia": False,
-				"SizeX": 512,
-				"MaxI": 1000,
-				"BoxRange": ((4, 4), (-2, -2)),
-				"GenType": "SD IT"
+				"count"    : 0,
+				"ci"       : 0,
+				"cj"       : 0,
+				"IsJulia"  : False,
+				"SizeX"    : 512,
+				"MaxI"     : 1000,
+				"BoxRange" : ((4, 4), (-2, -2)),
+				"GenType"  : "SD IT"
 			}
 
 		if not clr:
@@ -150,7 +268,6 @@ class fractal:
 			)
 
 		# Fractal Attributes
-
 		self.count = settings["count"]
 		self.ci = settings["ci"]
 		self.cj = settings["cj"]
@@ -170,10 +287,10 @@ class fractal:
 		self.WriteHeader()
 		self.GetFunction()
 
-		return
-
 	def WriteHeader(self):
-		# Writes Header Information to the Data file
+		"""
+		Function for writing header information to data output file
+		"""
 		genTxt =  [
 			"Some1and2's Kyros - A Fractal Generator",
 			" SD | Standard (f(z) = z^2 + c)",
@@ -184,7 +301,7 @@ class fractal:
 			" IT | Makes function based on itteration count",
 			" TD | Makes function based on travel distance",
 			"",
-			"colors = basic|sunset|ocean|fire",
+			"colors = [ basic | sunset | ocean | fire ]",
 			"",
 			"Ex: ",
 			"SD TD",
@@ -192,48 +309,21 @@ class fractal:
 			""
 		]
 
-		genTxt = "\n".join(genTxt)
-
-		genTxt += f"\n{self.color.ReturnText()}\n"
-
+		genTxt = "\n".join(genTxt) # Adds all the lines of genTxt list to a string separated by `\n`
+		genTxt += f"\n{self.color.ReturnText()}\n" # Adds color information from the `self.color()` class
 		genTxt += "\n" + " | ".join( \
 			f"{text} : {str(value)}" for text, value in [ \
-
-			["Name", self.FileName],
-			["GenType", self.GenType],
-			["TD Copy", self.TD]
-		]
+				["Name", self.FileName],
+				["GenType", self.GenType],
+				["TD Copy", self.TD]
+			]
 			if value
-		)
+		) # Adds more information
 
 		genTxt += f"\n{self.line}"
-
 		with open(f"{self.FileName}.md", "a") as text:
 			text.write(genTxt)
-
 			text.close()
-
-		return
-
-	def WriteFileInformation(self):
-		# Defines the text to add to the Image information file
-
-		NameInfo = {
-			"count": self.count,
-			"ci": self.ci,
-			"cj": self.cj,
-			"IsJulia": self.IsJulia,
-			"SizeX": self.SizeX,
-			"MaxI": self.MaxI,
-			"BoxRange": self.BoxRange,
-			"GenType": self.GenType,
-		}
-
-		with open(f"{self.FileName}.md", "a") as text:
-			text.write(f"\n{self.FileName}#{self.count} | {str(NameInfo)}")
-			text.close()
-
-		return True
 
 	def GetFunction(self):
 		# Sets the Function for Fractal Generation (based on `self.GenType`)
@@ -248,44 +338,22 @@ class fractal:
 
 		self.MagicFunctionGenerator = lambda *args: (func(args[1]) - args[2])
 
-	def MakeFrame(self):
-		# Function for making each frame
-		for i in range(int(self.SizeY + .5)):
-			line = []
-			for j in range(self.SizeX):
-				# Gets Generator Values based on relative position of BoxRange
-				if self.IsJulia is False:
-					self.ci = i * self.BoxRange[0][1] / (self.SizeY - 1) + self.BoxRange[1][1]
-					self.cj = j * self.BoxRange[0][0] / (self.SizeX - 1) + self.BoxRange[1][0]
-					self.zi = 0
-					self.zj = 0
-
-
-				if self.IsJulia is True:
-					self.zi = i * self.BoxRange[0][1] / (self.SizeY - 1) + self.BoxRange[1][1]
-					self.zj = j * self.BoxRange[0][0] / (self.SizeX - 1) + self.BoxRange[1][0]
-				
-				# Magic Generator Function (b is the number of itterations)
-				b = self.MagicFunctionGenerator(self.MaxI, self.cj, self.ci, self.zj, self.zi)
-
-				line.append(b)
-
-			print("{spaces}{CurrentWorkingNumber} / {TotalNumber} | {percentage:.2f}%".format(spaces=" " * (len(str(self.SizeY)) - len(str(i + 1))), CurrentWorkingNumber=i + 1, TotalNumber=self.SizeY, percentage=100 * (i + 1) / self.SizeY), end="\r")
-			# Yield make the result of a function an itterator that only evaluates when is needed to (by something like a `for` loop)
-			yield (line, i)
-		if self.IsJulia is False:
-			self.ci = self.cj = 0
-
 	def ColorIn(self, b: float) -> tuple:
-		# Function for returning a color
+		"""
+		Function for getting a color value from `b`
+		"""
 		return self.color.x(b)
 
 	def Animate(self, frames, lMost = -1, rMost = 1, through="modulus"):
 		# Function for Rendering Several Fractals Back to Back
+		"""
+		Rewrite this, this is such cool functionality but you wrote this like an idiot
+		Make this into a separated module and just send the values of "self" to it
+		"""
 
 		if through == "rabbit":
 			assert False # feature doesn't function and is therefore temporarily unavalible
-			# If the thing to animate through it rabbit
+			# Make Animation through values for [ SD R | TD R ]
 			images = []
 			mult = (rMost - lMost) / frames
 
@@ -315,6 +383,9 @@ class fractal:
 		if through == "modulus":
 
 			def MakeIMG(FileName: str, data: list):
+				"""
+				Function for image generation from data
+				"""
 				im = Image.new("RGBA", (self.SizeX, self.SizeY), (255, 255, 255, 255))
 				pixel = im.load()
 				for i in range(len(data)):
@@ -324,27 +395,34 @@ class fractal:
 				self.count += 1
 				return im
 
-			self.SizeY = int((self.BoxRange[0][1] / self.BoxRange[0][0]) * self.SizeX)
-
-			images = []
-			mult = (rMost - lMost) / frames
-
-			data = []
+			self.SizeY = int((self.BoxRange[0][1] / self.BoxRange[0][0]) * self.SizeX) # Gets Y Value of array
+			images = [] # List of PIL Images that get generated
+			mult = (rMost - lMost) / frames # value to muliply frame value to by to generate from Left-most to Right-most
+			data = [] # List for where the data gets generated into
 			for (oneline, _) in self.MakeFrame():
+				"""
+				Generates lines of the image and adds it to the `data` list
+				"""
 				data.append(oneline)
 
 			for frame in range(frames):
+				"""
+				Goes through each frame
+				"""
 				FileName = f"{self.FileName} - #{self.count}.png" # Sets Filename
 				if os.path.exists(FileName):
+					"""
+					Loads in images in case generation got interrupted and files that have been generated already exist
+					"""
 					images.append(Image.open(FileName))
-					print("[Load]:: {} / {} | {:.2f}%\t".format(frame, frames, 100 * (1 + frame) / frames), end="\r")
+					pu.InfoOut("[Load]:: {} / {} | {:.2f}%\t".format(frame, frames, 100 * (1 + frame) / frames), end="\r")
 					self.count += 1
 					continue
 				self.color.ModulusValue = frame * mult + lMost
 				images.append(MakeIMG(FileName, data))
-				print("[Frames]:: {} / {} | {:.2f}%\t".format(frame, frames, 100 * (1 + frame) / frames), end="\r")
+				pu.InfoOut("[Frames]:: {} / {} | {:.2f}%\t".format(frame, frames, 100 * (1 + frame) / frames), end="\r")
 
-			print()
+			pu.InfoOut()
 
 			# Variable for the Flat Images
 			flat = [image for image in images]
@@ -363,32 +441,41 @@ class fractal:
 		videoify(self.FileName).save()
 
 	def TurtleSetup(self):
-		# Function for setting up turtle screen
+		"""
+		Function for running interactive turtle window
+		"""
+
+		RunFromTurtle = lambda x, y : self.eval(x = x, y = - y, first = False) # Sets in between function for the turtle window to call `onclick`
 
 		# Sets up turtle screen to Match the file Generated Ratio
-		self.win = turtle.Screen()
-		self.win.setup(self.SizeX, int((self.BoxRange[0][1] / self.BoxRange[0][0]) * self.SizeX))
-		self.win.tracer(0, 0)
-		self.win.title(f"{self.__version__} - {self.FileName}")
+		self.win = turtle.Screen() # Initializes turtle screen
+		self.win.setup(self.SizeX, int((self.BoxRange[0][1] / self.BoxRange[0][0]) * self.SizeX)) # Sets up values for turtle screen
+		self.win.tracer(0, 0) # Makes it so that the window doesn't do auto refereshes
+		self.win.title(f"{self.__version__} - {self.FileName}") # Sets the title of the window. 
 
 		# Makes any key that is pressed close the window
-		self.win.listen()
-		for i in range(35, 127):
+		self.win.listen() # Makes the window listen for key strokes
+		for i in range(35, 127): # Goes through a list of letters and makes the window close if any of them are pressed
 			self.win.onkeypress(self.close, chr(i))
 
-		self.main(first = True)
-
-		self.win.onclick(self.main)
+		self.eval(first = True) # Calls the main function to generate the first image
+		self.win.onclick(RunFromTurtle)
 		self.win.mainloop()
 
 		return
 
-	def OpenTurtleMenu(self):
-		# Function for opening buttons as an overlay for turtle screen 
-		1
+	def GUI(self):
+		"""
+		Function for opening GUI interface for generator
+
+		[ Coming Soon ]
+		"""
 		pass
 
-	def close(self):
-		# Function for Closing Turtles
+	def close(self):		
+		"""
+		Function for Closing Turtle Window
+		Should be changed to see if `self.win()` existed as well as to try and make sure that no other subprocesses continue to run. 
+		"""
 		self.win.bye()
 		exit()

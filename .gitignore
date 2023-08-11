@@ -2,6 +2,7 @@
 *.bat
 run.py
 F -- */
+Test/
 reference files/
 
 # Byte-compiled / optimized / DLL files

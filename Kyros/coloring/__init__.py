@@ -4,12 +4,17 @@ from colorsys import hsv_to_rgb
 from math import cos
 
 class color:
-	# Class for Standard Colors
+	"""
+	Class for coloring Kyros Fractals
+	"""
+
 	def __init__(self, RateOfColorChange: int, MaxI: int = None, ColorStyle: str = "rotational", ShadowStyle: str = "none", MaxValue: int = 0, MinValue: int = 0, ColorName: str = ""):
-		# `__init__()` function for the `color` class
-		# `name`" is optional
-		# `MaxI` is only optional because the fact that the color module is class based means that the
-		# color can be set after the initial class is defined
+		"""
+		`__init__()` function for the `color` class
+		`name`" is optional
+		`MaxI` is only optional because the fact that the color module is class based means that the
+		color can be set after the initial class is defined
+		"""
 
 		self.ColorStyle = ColorStyle
 		self.ShadowStyle = ShadowStyle
