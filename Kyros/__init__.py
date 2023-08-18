@@ -479,3 +479,5 @@ class fractal:
 		"""
 		self.win.bye()
 		exit()
+
+

@@ -4,6 +4,7 @@ from colorsys import hsv_to_rgb
 from math import cos
 
 class color:
+
 	"""
 	Class for coloring Kyros Fractals
 	"""
