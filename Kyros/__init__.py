@@ -119,12 +119,6 @@ class fractal:
 				data = [i for i in self.MakeFrame()] # Sets the `data` variable to be the output of `self.MakeFrame()`
 				im.putdata( [ self.ColorIn(i) for i in data ] )
 
-				def FixArrayDimensions():
-					"""
-					Function for setting the dimensions of an array to a specified value
-					"""
-					...
-
 				# The dimension of the array has to be resized to make sure that the `TDObject().eval()` gets the right kind of data
 				outdata = []
 				for i in range(self.SizeY):
