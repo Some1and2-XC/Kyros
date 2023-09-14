@@ -158,6 +158,8 @@ f.SetAll(settings)
 f.TurtleSetup()
 ```
 
+# Notes
+ - `self.color.ModulusValue` in the information file always says that it is set to `None`, this is because the data is written before that variable is set. In the future this will be changed into a configurable interface for passing the color function into the fractal object. 
 # Current Work::
 ### See `TODO.md` to see what is being worked
 
